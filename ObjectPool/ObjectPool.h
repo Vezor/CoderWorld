@@ -25,9 +25,11 @@ public:
 
 private:
 
+	pthread_mutex_t mutex;
+
 	Type *m_ObjectList;
 
-	int m_ObjectCount;
+	volatile int m_ObjectCount;
 
 	ObjectPool(const ObjectPool<Type>& op);
 
@@ -42,13 +44,16 @@ template<class Type> ObjectPool<Type>::~ObjectPool() {
 }
 
 template<class Type> Type* ObjectPool<Type>::ObtainObject() {
+	pthread_mutex_lock(&(this->mutex));
 	if (this->m_ObjectList) {
 		Type *rt = this->m_ObjectList;
 		this->m_ObjectList = (Type*)this->m_ObjectList->GetNextObject();
 		rt->LinkNextObject(NULL);
+		pthread_mutex_unlock(&(this->mutex));
 		return rt;
 	} else {
 		Type *obj = new Type();
+		pthread_mutex_unlock(&(this->mutex));
 		return obj;
 	}
 }
@@ -65,8 +70,10 @@ template<class Type> void ObjectPool<Type>::ReturnObject(Type *object) {
 		return ;
 	}
 	object->SetLastUseTime(curtime);
+	pthread_mutex_lock(&(this->mutex));
 	object->LinkNextObject(this->m_ObjectList);
 	this->m_ObjectList = object;
+	pthread_mutex_unlock(&(this->mutex));
 }
 
 #endif /* OBJECTPOOL_H_ */

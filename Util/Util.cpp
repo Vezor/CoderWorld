@@ -10,6 +10,8 @@ const char* logfile = "/usr/workspace/CodeWorld/log";
 
 char** split(char* str,const char* c)
 {
+	if (str == NULL or c == NULL)
+		return NULL;
     char *cstr, *p;;
     char **res;
     char **temp = res;
@@ -26,6 +28,8 @@ char** split(char* str,const char* c)
 }
 
 int FindEqualSymbol(char *source) {
+	if (source == NULL)
+		return NULL;
 	char *temp = source;
 	while(*temp != '=' or *temp != '\0') {
 		temp++;
@@ -37,6 +41,8 @@ int FindEqualSymbol(char *source) {
 }
 
 const unsigned char* md5(const char* str) {
+	if (str == NULL)
+		return NULL;
 	unsigned char *md5str = new unsigned char[16];
 	mongo_md5_state_t md;
 	mongo_md5_init(&md);
@@ -46,6 +52,8 @@ const unsigned char* md5(const char* str) {
 }
 
 void Log(int code, const char* log) {
+	if (log == NULL)
+		return;
 	try {
 		time_t t;
 		time(&t);
@@ -64,6 +72,8 @@ void Log(int code, const char* log) {
 void ExceptionHandle(const BaseException& ex) {
 	int code = ex.GetExceptionCode();
 	const char* desc = ex.GetExceptionDesc();
+	if (desc == NULL)
+		return ;
 	Log(code, desc);
 	BsonObj exception;
 	exception.set("res", "false");

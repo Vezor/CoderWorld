@@ -8,6 +8,8 @@
 #include "CStyleTool.h"
 
 const char* StrCat(const char* str1, const char* str2) {
+	if (str1 == NULL || str2 == NULL)
+		return NULL;
 	char *result;
 	const char *ls = str1;
 	const char *rs = str2;
@@ -19,6 +21,8 @@ const char* StrCat(const char* str1, const char* str2) {
 }
 
 void strcatt(int catcount, char *dest, ...) {
+	if (dest == NULL)
+		return ;
 	char *temp = dest;
 	while(*temp)
 		temp++;

@@ -18,10 +18,14 @@ int Server::Accept(){
 void Server::Process(){
 	char* url = this->GetUrl();
 	char* parameter = this->GetParameter();
+	if (url == NULL || parameter == NULL)
+		return;
 	Request req(parameter);
 	ApiMap::iterator it = this->m_ApiMap.find(url);
 	if (it != this->m_ApiMap.end()){
 		BsonObj *res = it->second->Process(req.GetParamMap());
+		if (res == NULL)
+			return;
 		Response resp(res, it->second);
 		FCGI_printf("%s", resp.Get());
 	} else {

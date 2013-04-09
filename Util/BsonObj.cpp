@@ -13,7 +13,8 @@ BsonObj::BsonObj() {
 }
 
 BsonObj::BsonObj(bson* bobj) {
-	this->obj = bobj;
+	if (bobj != NULL)
+		this->obj = bobj;
 }
 
 BsonObj::~BsonObj() {

@@ -28,7 +28,6 @@ BsonObj* SocialEntityServer::GetAll(const char *entity) {
 		bobj->set(key, value);
 	}
 	return bobj;
-
 }
 
 char** SocialEntityServer::GetSome(const char *entity, const KFList& proplist) {

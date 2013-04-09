@@ -10,7 +10,8 @@
 Response::Response(BsonObj *srcResp, Api *api) : m_SrcResp(srcResp), m_Api(api) {}
 
 Response::~Response() {
-	delete this->m_SrcResp;
+	if (this->m_SrcResp != NULL)
+		delete this->m_SrcResp;
 }
 
 const char* Response::Get() {
